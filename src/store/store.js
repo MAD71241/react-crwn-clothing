@@ -1,9 +1,12 @@
-import { compose, createStore, applyMiddleware } from "redux";
-import logger from "redux-logger";
+import { configureStore } from "@reduxjs/toolkit";
 import { rootReducer } from "./root-reducer";
+import thunk from "redux-thunk";
+import logger from "redux-logger";
+/* import { compose, createStore, applyMiddleware } from "redux";
+
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import thunk from "redux-thunk";
+
 
 const persistConfig = {
     key: 'root',
@@ -12,13 +15,15 @@ const persistConfig = {
     whitelist: ['cart']
 }
 
-const persistentReducer = persistReducer(persistConfig, rootReducer)
+const persistentReducer = persistReducer(persistConfig, rootReducer) */
 
 // logger allows us to see what the state is, what the action is and how the state looks after the action
 // middleware runs before the action hits the reducer
 const middlewares = [logger, thunk /* middleware2, middleware3, etc */];
 // in order to work, middlewares must be passed as argument in the 'compose' method
-const composedEnhancers = compose(applyMiddleware(...middlewares));
+//const composedEnhancers = compose(applyMiddleware(...middlewares));
 
-export const store = createStore(persistentReducer, undefined, composedEnhancers);
-export const persistorStore = persistStore(store)
+export const store = configureStore({
+    reducer: rootReducer,
+});
+// export const persistorStore = persistStore(store)
