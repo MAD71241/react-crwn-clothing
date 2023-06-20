@@ -3,8 +3,8 @@ import {
   Action,
   ActionWithPayload,
   withMatcher,
-} from "../../utils/reducer/reducer.utils.js";
-import { CATEGORY_ACTION_TYPES, Category } from "./category.types.js";
+} from "../../utils/reducer/reducer.utils";
+import { CATEGORY_ACTION_TYPES, Category } from "./category.types";
 import { getCategoriesAndDocuments } from "../../utils/firebase/firebase.utils.js";
 import { DocumentData } from "firebase/firestore";
 

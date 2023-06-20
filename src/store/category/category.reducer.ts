@@ -4,7 +4,7 @@ import {
   fetchCategoriesFailure,
   fetchCategoriesStart,
   fetchCategoriesSuccess,
-} from "./category.action.js";
+} from "./category.action";
 import { DocumentData } from "firebase/firestore";
 import { Category } from "./category.types.js";
 
