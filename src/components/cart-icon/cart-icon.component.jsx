@@ -4,13 +4,11 @@ import {
   ItemCount,
 } from "./cart-icon.styles.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsCartOpen } from "../../store/cart/cart.action.js";
+import { setIsCartOpen } from "../../store/cart/cart.action";
 import {
-  selectCartItems,
   selectIsCartOpen,
   selectCartCount,
-  selectCartTotal,
-} from "../../store/cart/cart.selector.js";
+} from "../../store/cart/cart.selector";
 
 export const CartIcon = () => {
   const dispatch = useDispatch()
