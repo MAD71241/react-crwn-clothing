@@ -16,7 +16,8 @@ export const ShoppingIcon = styled(ShoppingSvg)`
   height: 24px;
 `;
 
-export const ItemCount = styled.span`      position: absolute;
+export const ItemCount = styled.span`
+position: absolute;
 font-size: 10px;
 font-weight: bold;
 bottom: 12px;

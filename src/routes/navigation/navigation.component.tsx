@@ -9,9 +9,9 @@ import { selectCurrentUser } from "../../store/user/user.selector";
 import {
   NavigationContainer,
   LogoContainer,
-  NavlinksContainer,
-  Navlink,
-} from "./navigation.styles.js";
+  NavLinks,
+  NavLink,
+} from "./navigation.styles";
 import { selectIsCartOpen } from "../../store/cart/cart.selector";
 
 export const NavigationBar = () => {
@@ -24,17 +24,17 @@ export const NavigationBar = () => {
         <LogoContainer to="/">
           <CrwnLogo className="logo" />
         </LogoContainer>
-        <NavlinksContainer>
+        <NavLinks>
           {currentUser ? (
             <span onClick={signOutUser} className="nav-link">
               SIGN-OUT
             </span>
           ) : (
-            <Navlink to="/authentication">SIGN-IN</Navlink>
+            <NavLink to="/authentication">SIGN-IN</NavLink>
           )}
-          <Navlink to="/shop">SHOP</Navlink>
+          <NavLink to="/shop">SHOP</NavLink>
           <CartIcon />
-        </NavlinksContainer>
+        </NavLinks>
         {isCartOpen && <CartDropdown />}
       </NavigationContainer>
       <Outlet />
