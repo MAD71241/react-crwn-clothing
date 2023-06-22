@@ -3,7 +3,6 @@ import { useState } from "react";
 import {
   signInUserWithEmailAndPassword,
   signInWithGooglePopup,
-  createUserDocumentFromAuth,
 } from "../../utils/firebase/firebase.utils";
 import { FormInput } from "../form-input/form-input.component";
 import { ButtonComponent, BUTTON_TYPES } from "../button/button.component";

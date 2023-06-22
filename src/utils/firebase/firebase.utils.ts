@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { FirebaseApp, initializeApp } from "firebase/app";
 import {
   getAuth,
   signInWithPopup,
@@ -8,6 +8,9 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  User,
+  Unsubscribe,
+  NextOrObserver,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -18,25 +21,28 @@ import {
   getDocs,
   collection,
   writeBatch,
+  Firestore,
+  QueryDocumentSnapshot,
 } from "firebase/firestore";
+import { Category } from "../../store/category/category.types";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCQHBosf1KzvX_dozKqDh6ksjkOjD27UkY",
-  authDomain: "crwn-clothing-db-9ca74.firebaseapp.com",
-  projectId: "crwn-clothing-db-9ca74",
-  storageBucket: "crwn-clothing-db-9ca74.appspot.com",
-  messagingSenderId: "638611838091",
-  appId: "1:638611838091:web:36610c5baa1ab6a9fff08e",
-  measurementId: "G-W8B1X78Y38",
-};
+enum firebaseConfig {
+  apiKey = "AIzaSyCQHBosf1KzvX_dozKqDh6ksjkOjD27UkY",
+  authDomain = "crwn-clothing-db-9ca74.firebaseapp.com",
+  projectId = "crwn-clothing-db-9ca74",
+  storageBucket = "crwn-clothing-db-9ca74.appspot.com",
+  messagingSenderId = "638611838091",
+  appId = "1:638611838091:web:36610c5baa1ab6a9fff08e",
+  measurementId = "G-W8B1X78Y38",
+}
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const provider = new GoogleAuthProvider();
+const app: FirebaseApp = initializeApp(firebaseConfig);
+const provider: GoogleAuthProvider = new GoogleAuthProvider();
 provider.setCustomParameters({
   prompt: "select_account",
 });
@@ -45,9 +51,9 @@ export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, provider);
-export const db = getFirestore();
+export const db: Firestore = getFirestore();
 
-export const addCollectionAndDocuments = async (
+/* export const addCollectionAndDocuments = async (
   collectionKey,
   objectsToAdd
 ) => {
@@ -61,12 +67,22 @@ export const addCollectionAndDocuments = async (
 
   await batch.commit();
   console.log('done');
+}; */
+
+type AdditionalInformations = {
+  displayName?: string;
+};
+
+type UserData = {
+  createdAt: Date;
+  displayName: string;
+  email: string;
 };
 
 export const createUserDocumentFromAuth = async (
-  userAuth,
-  additionalInformations = {}
-) => {
+  userAuth: User,
+  additionalInformations = {} as AdditionalInformations
+): Promise<QueryDocumentSnapshot<UserData> | void> => {
   if (!userAuth) {
     return;
   }
@@ -96,7 +112,10 @@ export const createUserDocumentFromAuth = async (
     }
   }
 };
-export const createAuthUserWithEmailAndPassword = async (email, password) => {
+export const createAuthUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
   if (!email || !password) return;
   try {
     const response = await createUserWithEmailAndPassword(
@@ -110,7 +129,10 @@ export const createAuthUserWithEmailAndPassword = async (email, password) => {
   }
 };
 
-export const signInUserWithEmailAndPassword = async (email, password) => {
+export const signInUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
   if (!email || !password) return;
   try {
     const response = await signInWithEmailAndPassword(auth, email, password);
@@ -120,15 +142,18 @@ export const signInUserWithEmailAndPassword = async (email, password) => {
   }
 };
 
-export const signOutUser = async () => await signOut(auth);
+export const signOutUser = async (): Promise<void> => await signOut(auth);
 
-export const onAuthStateChangedListener = (callback) =>
-  onAuthStateChanged(auth, callback);
+export const onAuthStateChangedListener = (
+  callback: NextOrObserver<User>
+): Unsubscribe => onAuthStateChanged(auth, callback);
 
-export const getCategoriesAndDocuments = async () => {
-  const collectionRef = collection(db, 'categories')
-  const q = query(collectionRef)
+export const getCategoriesAndDocuments = async (): Promise<Category[]> => {
+  const collectionRef = collection(db, "categories");
+  const q = query(collectionRef);
 
-  const querySnapshot = await getDocs(q)
-  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data())
-}
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(
+    (docSnapshot) => docSnapshot.data() as Category
+  );
+};

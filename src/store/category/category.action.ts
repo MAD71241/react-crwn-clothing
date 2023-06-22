@@ -5,7 +5,7 @@ import {
   withMatcher,
 } from "../../utils/reducer/reducer.utils";
 import { CATEGORY_ACTION_TYPES, Category } from "./category.types";
-import { getCategoriesAndDocuments } from "../../utils/firebase/firebase.utils.js";
+import { getCategoriesAndDocuments } from "../../utils/firebase/firebase.utils";
 import { DocumentData } from "firebase/firestore";
 
 export type SetCategories = ActionWithPayload<
