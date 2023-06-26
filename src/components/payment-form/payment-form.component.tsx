@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { useSelector } from "react-redux";
 import { selectCartTotal } from "../../store/cart/cart.selector";
 import { selectCurrentUser } from "../../store/user/user.selector";
@@ -13,7 +13,7 @@ export const PaymentForm = () => {
   const user = useSelector(selectCurrentUser);
   const cartTotal = useSelector(selectCartTotal);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
-  const paymentHandler = async (event) => {
+  const paymentHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!stripe || !elements) {
       return;
@@ -27,12 +27,15 @@ export const PaymentForm = () => {
       body: JSON.stringify({ amount: cartTotal * 100 }),
     }).then((response) => response.json());
     if (response.error) {
-      
     }
     const clientSecret = response.paymentIntent.client_secret;
+
+    const cardDetails = elements.getElement(CardElement);
+    if (!cardDetails) return;
+
     const paymentResult = stripe.confirmCardPayment(clientSecret, {
       payment_method: {
-        card: elements.getElement(CardElement),
+        card: cardDetails,
         billing_details: {
           name: user ? user.displayName : "Guest",
         },
